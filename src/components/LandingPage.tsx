@@ -1,11 +1,14 @@
+"use client";
+
+import { useSession, signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
 import HeroImg from "../../public/images/message-to-convey.webp";
-import { TfiArrowCircleRight } from "react-icons/tfi";
 import { ImBubbles2 } from "react-icons/im";
 
 const LandingPage = () => {
+  const { data: session } = useSession();
   return (
     <main className="w-full h-full flex flex-col justify-center">
       <section
@@ -32,15 +35,27 @@ const LandingPage = () => {
               Share thoughts, ideas, & code!
             </h4>
           </div>
-          <Link
-            href="#"
-            className="w-full flex justify-center items-center gap-3 p-[1.4rem] uppercase text-[#FBD101] text-xl font-extrabold bg-[#2F6F47] rounded-lg shadow-lg shadow-gray-700 hover:bg-emerald-800 transition duration-200"
-          >
-            All right here
-            <span>
-              <ImBubbles2 size={30} />
-            </span>
-          </Link>
+          {!session ? (
+            <div
+              onClick={() => signIn("google", { callbackUrl: "/chat" })}
+              className="w-full flex justify-center items-center gap-3 p-[1.4rem] uppercase text-[#FBD101] text-xl font-extrabold bg-[#2F6F47] rounded-lg shadow-lg shadow-gray-700 hover:bg-emerald-800 transition duration-200"
+            >
+              All right here
+              <span>
+                <ImBubbles2 size={30} />
+              </span>
+            </div>
+          ) : (
+            <Link
+              href="/chat"
+              className="w-full flex justify-center items-center gap-3 p-[1.4rem] uppercase text-[#FBD101] text-xl font-extrabold bg-[#2F6F47] rounded-lg shadow-lg shadow-gray-700 hover:bg-emerald-800 transition duration-200"
+            >
+              All right here
+              <span>
+                <ImBubbles2 size={30} />
+              </span>
+            </Link>
+          )}
         </section>
         <section className="p-2">
           <Image
