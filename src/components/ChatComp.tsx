@@ -1,18 +1,34 @@
 "use client";
 
+import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import { User } from "../app/api/auth/[...nextauth]/route";
 
 import { TbChartBubbleFilled } from "react-icons/tb";
 import NewMessageForm from "./forms/NewMessageForm";
 import Image from "next/image";
+import ProfileModal from "./forms/ProfileModal";
 
 const ChatComp: React.FC = () => {
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const messagesWithUsers = useQuery(api.functions.getMessagesWithUsers);
   const { data: session } = useSession();
   console.log("MESSAGES WITH USERS: ", messagesWithUsers);
+
+  const handleOpenModal = (user: User | any) => {
+    setSelectedUser(user);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedUser(null);
+  };
+
   return (
     <>
       <div className="bg-white min-w-[53rem] fixed top-0 left-[50%] translate-x-[-50%] z-10 flex justify-center text-start  pt-5 px-10 shadow-xl shadow-white">
@@ -32,7 +48,7 @@ const ChatComp: React.FC = () => {
                 {session?.user?.name} |{" "}
                 <span
                   onClick={() => signOut({ callbackUrl: "/" })}
-                  className="text-zinc-950 font-semibold hover:text-emerald-600 cursor-pointer transition duration-200"
+                  className="text-zinc-700 font-semibold hover:text-emerald-600 cursor-pointer transition duration-200"
                 >
                   SignOut
                 </span>
@@ -41,8 +57,8 @@ const ChatComp: React.FC = () => {
           </div>
         </div>
       </div>
-      <main className="max-w-[50rem] bg-zinc-200 px-4 rounded-2xl max-h-screen flex flex-col mx-auto pb-12 overflow-y-auto">
-        <ul className="overflow-y-auto min-h-screen pt-28">
+      <main className="max-w-[50rem] bg-white px-4 rounded-2xl max-h-screen flex flex-col mx-auto pb-12 overflow-y-auto">
+        <ul className="overflow-y-auto min-h-screen pt-[9rem]">
           {messagesWithUsers?.map((message) => (
             <div
               key={message._id}
@@ -53,13 +69,18 @@ const ChatComp: React.FC = () => {
               </li>
               <div className="flex items-center justify-center w-full">
                 <div className="bg-zinc-500 mx-4 my-1.5 h-[0.02rem] flex-1"></div>
-                <div className=" pt-2 pb-1 flex items-center justify-center">
+                <div className=" pt-2 pb-1 min-w-[16rem] flex items-center justify-center">
                   <Image
-                    src={message.user?.image as string}
+                    src={
+                      (message.user?.image as string) ||
+                      (message.user?.name.slice(0, 2).toUpperCase() as string)
+                    }
                     alt={message.user?.name as string}
                     width={30}
                     height={30}
-                    className="rounded-full p-[1px] bg-zinc-400"
+                    onMouseEnter={() => handleOpenModal(message.user)}
+                    onMouseLeave={handleCloseModal}
+                    className="rounded-full p-[1px] min-w-8 min-h-8 max-w-8 max-h-8 bg-zinc-400 cursor-pointer"
                   />
                   <div className="flex w-full items-center gap-2 px-2 text-zinc-200">
                     <li className="text-[#fddb51] text-xs">
@@ -84,6 +105,14 @@ const ChatComp: React.FC = () => {
         </ul>
         <NewMessageForm />
       </main>
+
+      {modalOpen && selectedUser && (
+        <ProfileModal
+          user={selectedUser}
+          isOpen={modalOpen}
+          onClose={handleCloseModal}
+        />
+      )}
     </>
   );
 };
