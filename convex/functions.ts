@@ -42,19 +42,3 @@ export const addMessage = mutation({
     return messageId;
   },
 });
-
-export const getCurrentUser = query(() => {
-  return {
-    users: {
-      _id: true,
-      name: true,
-      image: true,
-      messages: {
-        _id: true,
-        content: true,
-        createdAt: true,
-        userId: true,
-      },
-    },
-  };
-});
