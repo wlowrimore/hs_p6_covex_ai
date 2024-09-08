@@ -1,34 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 
 import { TbChartBubbleFilled } from "react-icons/tb";
+import NewMessageForm from "./forms/NewMessageForm";
 
-interface ChatProps {
-  messages: string[];
-  newMessage: string;
-}
-const ChatComp: React.FC<ChatProps> = () => {
-  const [messages, setMessages] = useState<string[]>([]);
-  const [newMessage, setNewMessage] = useState<string>("");
-
+const ChatComp: React.FC = () => {
+  const [postedTime, setPostedTime] = useState<string>("");
+  const messages = useQuery(api.functions.listMessages);
   const { data: session } = useSession();
-
-  const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => [
-    e.preventDefault(),
-    setMessages([...messages, newMessage]),
-    setNewMessage(""),
-  ];
-
-  // useEffect(() => {
-  //   // fetch existing messages
-  //   if (fetchedMessages) {
-  //     setMessages(fetchedMessages);
-  //     setHasMessages(true);
-  //   }
-  // }, []);
 
   return (
     <>
@@ -43,32 +27,26 @@ const ChatComp: React.FC<ChatProps> = () => {
 
       <main className="max-w-[50rem] h-screen rounded-lg flex flex-col mx-auto border border-black">
         <ul>
-          {messages.map((message, msgIndex) => (
-            <li key={msgIndex} className="p-4">
-              {message}
-            </li>
+          {messages?.map((message, msgIndex) => (
+            <div key={msgIndex} className="flex flex-col">
+              <li className="pt-4 px-4 text-xs text-gray-600">
+                {message.sender}&nbsp;
+                <span>
+                  {new Date(message._creationTime).toLocaleString("en-US", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })}
+                </span>
+              </li>
+              <li className="px-6 text-sm">{message.text}</li>
+            </div>
           ))}
         </ul>
-        <form
-          onSubmit={handleSendMessage}
-          className="fixed bottom-10 w-[50rem] flex"
-        >
-          <input
-            type="text"
-            name="message"
-            id="message"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Start Chatting..."
-            className="w-full border border-neutral-400 border-r-0 rounded-l-lg p-2 outline-none"
-          />
-          <button
-            type="submit"
-            className="border border-l-0 border-neutral-400 rounded-r-lg p-2"
-          >
-            <TbChartBubbleFilled size={24} color={"gray"} />
-          </button>
-        </form>
+        <NewMessageForm />
       </main>
     </>
   );
