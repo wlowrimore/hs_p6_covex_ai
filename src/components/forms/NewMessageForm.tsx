@@ -11,7 +11,7 @@ const NewMessageForm = () => {
   const [message, setMessage] = useState<string>("");
   const { isAuthenticated, userId } = useConvexAuth();
   const addMessage = useMutation(api.functions.addMessage);
-  const messages = useQuery(api.functions.listMessages);
+  // const messages = useQuery(api.functions.listMessages);
 
   const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
