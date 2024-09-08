@@ -5,5 +5,6 @@ export default defineSchema({
   messages: defineTable({
     sender: v.string(),
     text: v.string(),
+    userId: v.string(),
   }),
 });

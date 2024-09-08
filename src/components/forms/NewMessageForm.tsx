@@ -22,7 +22,7 @@ const NewMessageForm = () => {
   };
 
   return (
-    <div className="bg-white fixed bottom-1 left-[50%] translate-x-[-50%] min-w-[53rem] h-[4.5rem] px-12 flex justify-center">
+    <div className="bg-white fixed bottom-0 left-[50%] translate-x-[-50%] min-w-[53rem] h-[4.5rem] px-12 flex justify-center">
       <form onSubmit={handleSubmit} className="w-full flex items-center">
         <input
           type="text"

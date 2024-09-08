@@ -13,9 +13,14 @@ export const createMessage = mutation({
     text: v.string(),
   },
   handler: async (ctx, args) => {
+    const user = await ctx.auth.getUserIdentity();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
     await ctx.db.insert("messages", {
       sender: args.sender,
       text: args.text,
+      userId: user.tokenIdentifier,
     });
   },
 });
