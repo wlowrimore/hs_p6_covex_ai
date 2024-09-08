@@ -38,7 +38,7 @@ const LandingPage = () => {
           {!session ? (
             <div
               onClick={() => signIn("google", { callbackUrl: "/chat" })}
-              className="w-full flex justify-center items-center gap-3 p-[1.4rem] uppercase text-[#dacc86] text-xl font-extrabold bg-[#0c1811] rounded-lg shadow-lg shadow-gray-700 hover:bg-emerald-800 transition duration-200"
+              className="w-full flex justify-center items-center gap-3 p-[1.4rem] uppercase text-[#dacc86] text-xl font-extrabold bg-[#0c1811] rounded-lg shadow-lg shadow-gray-700 hover:bg-emerald-800 transition duration-200 cursor-pointer"
             >
               All right here
               <span>
