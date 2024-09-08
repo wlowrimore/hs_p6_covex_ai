@@ -36,7 +36,11 @@ export const getMessagesWithUsers = query({
     const messagesWithUsers = await Promise.all(
       messages.map(async (message) => {
         const user = await ctx.db.get(message.userId);
-        return { ...message, user };
+        const updatedUser = {
+          ...user,
+          id: user?._id,
+        };
+        return { ...message, user: updatedUser };
       })
     );
     return messagesWithUsers;

@@ -1,16 +1,13 @@
 "use client";
 
 import React from "react";
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
 import Image from "next/image";
+import { User } from "../../app/api/auth/[...nextauth]/route";
 
 const ProfileModal = ({
   user,
-  isOpen,
-  onClose,
 }: {
-  user: any;
+  user: User;
   isOpen: boolean;
   onClose: () => void;
 }) => {

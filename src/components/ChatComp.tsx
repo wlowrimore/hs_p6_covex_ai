@@ -14,12 +14,12 @@ import ProfileModal from "./forms/ProfileModal";
 
 const ChatComp: React.FC = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const messagesWithUsers = useQuery(api.functions.getMessagesWithUsers);
   const { data: session } = useSession();
   console.log("MESSAGES WITH USERS: ", messagesWithUsers);
 
-  const handleOpenModal = (user: User | any) => {
+  const handleOpenModal = (user: User) => {
     setSelectedUser(user);
     setModalOpen(true);
   };
@@ -73,18 +73,18 @@ const ChatComp: React.FC = () => {
                   <Image
                     src={
                       (message.user?.image as string) ||
-                      (message.user?.name.slice(0, 2).toUpperCase() as string)
+                      (message.user?.name?.slice(0, 2).toUpperCase() as string)
                     }
                     alt={message.user?.name as string}
                     width={30}
                     height={30}
-                    onMouseEnter={() => handleOpenModal(message.user)}
+                    onMouseEnter={() => handleOpenModal(message.user as User)}
                     onMouseLeave={handleCloseModal}
                     className="rounded-full p-[1px] min-w-8 min-h-8 max-w-8 max-h-8 bg-zinc-400 cursor-pointer"
                   />
                   <div className="flex w-full items-center gap-2 px-2 text-zinc-200">
                     <li className="text-[#fddb51] text-xs">
-                      {message.user?.email.split("@")[0] ?? ""}
+                      {message.user?.email?.split("@")[0] ?? ""}
                     </li>
                     <li className="text-[0.6rem] flex w-full">
                       {new Date(message._creationTime).toLocaleString("en-US", {
