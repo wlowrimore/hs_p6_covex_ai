@@ -22,23 +22,25 @@ const NewMessageForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="fixed bottom-10 w-[50rem] flex">
-      <input
-        type="text"
-        name="message"
-        id="message"
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-        placeholder="Start Chatting..."
-        className="w-full border border-neutral-400 border-r-0 rounded-l-lg p-2 outline-none"
-      />
-      <button
-        type="submit"
-        className="border border-l-0 border-neutral-400 rounded-r-lg p-2"
-      >
-        <TbChartBubbleFilled size={24} color={"gray"} />
-      </button>
-    </form>
+    <div className="bg-white fixed bottom-1 right-[33.55%] w-[56rem] h-[4.5rem] px-12 flex mx-auto">
+      <form onSubmit={handleSubmit} className="w-full flex items-center">
+        <input
+          type="text"
+          name="message"
+          id="message"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          placeholder="Start Chatting..."
+          className="w-full border border-neutral-400 border-r-0 rounded-l-lg p-2 outline-none"
+        />
+        <button
+          type="submit"
+          className="border border-l-0 border-neutral-400 bg-white rounded-r-lg p-2"
+        >
+          <TbChartBubbleFilled size={24} color={"gray"} />
+        </button>
+      </form>
+    </div>
   );
 };
 

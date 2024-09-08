@@ -19,17 +19,24 @@ const ChatComp: React.FC = () => {
       {session && (
         <h1
           onClick={() => signOut({ callbackUrl: "/" })}
-          className="text-lg ml-6 text-extrabold hover:text-blue-500 cursor-pointer"
+          className="fixed top-4 right-12 text-lg ml-6 text-extrabold hover:text-blue-500 cursor-pointer"
         >
           SignOut
         </h1>
       )}
-
-      <main className="max-w-[50rem] h-screen rounded-lg flex flex-col mx-auto border border-black">
-        <ul>
+      <div className="bg-white w-[60rem] fixed top-0 right-[31%] pt-5 px-10 shadow-lg shadow-white">
+        <div className="max-w-[50rem] bg-gradient-to-b from-neutral-950 to-zinc-200 bg-clip-text text-transparent">
+          <h1 className="text-6xl font-bold uppercase">Convey</h1>
+        </div>
+      </div>
+      <main className="max-w-[50rem] bg-zinc-200 px-4 rounded-2xl max-h-screen flex flex-col mx-auto pb-12 overflow-y-auto">
+        <ul className="overflow-y-auto min-h-screen pt-28">
           {messages?.map((message, msgIndex) => (
-            <div key={msgIndex} className="flex flex-col">
-              <li className="pt-4 px-4 text-xs text-gray-600">
+            <div
+              key={msgIndex}
+              className="flex flex-col bg-zinc-700 py-3 my-3 rounded-xl"
+            >
+              <li className="px-4 text-xs text-[#eab308]">
                 {message.sender}&nbsp;
                 <span>
                   {new Date(message._creationTime).toLocaleString("en-US", {
@@ -42,7 +49,9 @@ const ChatComp: React.FC = () => {
                   })}
                 </span>
               </li>
-              <li className="px-6 text-sm">{message.text}</li>
+              <li className="px-6 text-base text-white tracking-wide">
+                {message.text}
+              </li>
             </div>
           ))}
         </ul>
