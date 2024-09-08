@@ -28,6 +28,21 @@ export const listMessages = query({
   },
 });
 
+export const getMessagesWithUsers = query({
+  args: {},
+  handler: async (ctx) => {
+    const messages = await ctx.db.query("messages").collect();
+
+    const messagesWithUsers = await Promise.all(
+      messages.map(async (message) => {
+        const user = await ctx.db.get(message.userId);
+        return { ...message, user };
+      })
+    );
+    return messagesWithUsers;
+  },
+});
+
 export const addMessage = mutation({
   args: {
     content: v.string(),

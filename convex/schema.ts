@@ -11,6 +11,6 @@ export default defineSchema({
   messages: defineTable({
     content: v.string(),
     createdAt: v.string(),
-    userId: v.string(),
+    userId: v.id("users"),
   }).index("by_createdAt", ["createdAt"]),
 });
