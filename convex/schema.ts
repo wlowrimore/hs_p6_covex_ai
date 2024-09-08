@@ -2,9 +2,15 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
+  users: defineTable({
+    name: v.string(),
+    email: v.string(),
+    image: v.optional(v.string()),
+  }).index("by_email", ["email"]),
+
   messages: defineTable({
-    sender: v.string(),
-    text: v.string(),
+    content: v.string(),
+    createdAt: v.string(),
     userId: v.string(),
-  }),
+  }).index("by_createdAt", ["createdAt"]),
 });

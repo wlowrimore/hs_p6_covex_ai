@@ -34,13 +34,13 @@ const ChatComp: React.FC = () => {
       </div>
       <main className="max-w-[50rem] bg-zinc-200 px-4 rounded-2xl max-h-screen flex flex-col mx-auto pb-12 overflow-y-auto">
         <ul className="overflow-y-auto min-h-screen pt-28">
-          {messages?.map((message, msgIndex) => (
+          {messages?.map((message) => (
             <div
-              key={msgIndex}
+              key={message._id}
               className="flex flex-col bg-zinc-700 py-3 my-3 rounded-xl"
             >
               <li className="px-4 text-xs text-[#eab308]">
-                {message.sender}&nbsp;
+                {message.content}&nbsp;
                 <span>
                   {new Date(message._creationTime).toLocaleString("en-US", {
                     year: "numeric",
@@ -52,9 +52,9 @@ const ChatComp: React.FC = () => {
                   })}
                 </span>
               </li>
-              <li className="px-6 text-base text-white tracking-wide">
+              {/* <li className="px-6 text-base text-white tracking-wide">
                 {message.text}
-              </li>
+              </li> */}
             </div>
           ))}
         </ul>

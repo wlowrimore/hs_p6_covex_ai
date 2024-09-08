@@ -1,26 +1,60 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
+export const upsertUser = mutation({
+  args: {
+    name: v.string(),
+    email: v.string(),
+    image: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", args.email))
+      .unique();
+
+    if (user) {
+      await ctx.db.patch(user._id, args);
+      return user._id;
+    } else {
+      return await ctx.db.insert("users", args);
+    }
+  },
+});
+
 export const listMessages = query({
   handler: async (ctx) => {
     return await ctx.db.query("messages").collect();
   },
 });
 
-export const createMessage = mutation({
+export const addMessage = mutation({
   args: {
-    sender: v.string(),
-    text: v.string(),
+    content: v.string(),
+    userId: v.id("users"),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.auth.getUserIdentity();
-    if (!user) {
-      throw new Error("Unauthorized");
-    }
-    await ctx.db.insert("messages", {
-      sender: args.sender,
-      text: args.text,
-      userId: user.tokenIdentifier,
+    const messageId = await ctx.db.insert("messages", {
+      content: args.content,
+      createdAt: Date.now().toString(),
+      userId: args.userId,
     });
+    return messageId;
   },
+});
+
+export const getCurrentUser = query(() => {
+  return {
+    users: {
+      _id: true,
+      name: true,
+      image: true,
+      messages: {
+        _id: true,
+        content: true,
+        createdAt: true,
+        userId: true,
+      },
+    },
+  };
 });
