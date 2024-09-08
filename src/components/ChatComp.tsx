@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useSession } from "next-auth/react";
@@ -10,7 +10,6 @@ import { TbChartBubbleFilled } from "react-icons/tb";
 import NewMessageForm from "./forms/NewMessageForm";
 
 const ChatComp: React.FC = () => {
-  const [postedTime, setPostedTime] = useState<string>("");
   const messages = useQuery(api.functions.listMessages);
   const { data: session } = useSession();
 
@@ -25,8 +24,11 @@ const ChatComp: React.FC = () => {
         </h1>
       )}
       <div className="bg-white w-[60rem] fixed top-0 right-[31%] pt-5 px-10 shadow-lg shadow-white">
-        <div className="max-w-[50rem] bg-gradient-to-b from-neutral-950 to-zinc-200 bg-clip-text text-transparent">
+        <div className="max-w-[50rem] bg-gradient-to-b from-neutral-950 to-zinc-300 bg-clip-text text-transparent flex items-center gap-2">
           <h1 className="text-6xl font-bold uppercase">Convey</h1>
+          <span className="text-zinc-500">
+            <TbChartBubbleFilled size={52} />
+          </span>
         </div>
       </div>
       <main className="max-w-[50rem] bg-zinc-200 px-4 rounded-2xl max-h-screen flex flex-col mx-auto pb-12 overflow-y-auto">
