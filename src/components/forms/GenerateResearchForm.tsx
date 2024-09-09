@@ -11,7 +11,7 @@ const GenerateResearchForm = () => {
   const [prompt, setPrompt] = useState<string>("");
   const [result, setResult] = useState<string>("");
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const { isAuthenticated, userId } = useConvexAuth();
+  const { isAuthenticated } = useConvexAuth();
 
   const generateResults = useAction(api.actions.generateResearchResponses);
 
