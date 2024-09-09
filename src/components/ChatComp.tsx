@@ -57,7 +57,7 @@ const ChatComp: React.FC = () => {
           </div>
         </div>
       </div>
-      <main className="max-w-[50rem] bg-white px-4 rounded-2xl max-h-screen flex flex-col mx-auto pb-12 overflow-y-auto">
+      <main className="max-w-[50rem] bg-white px-4 rounded-2xl min-h-screen flex flex-col mx-auto pb-24 overflow-y-auto">
         <ul className="overflow-y-auto min-h-screen pt-[9rem]">
           {messagesWithUsers?.map((message) => (
             <div

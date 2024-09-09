@@ -25,7 +25,7 @@ const NewMessageForm = () => {
   }
 
   return (
-    <div className="bg-white fixed bottom-0 left-[50%] translate-x-[-50%] min-w-[54rem] h-[4.5rem] px-12 flex justify-center">
+    <div className="bg-white fixed bottom-0 left-[50%] translate-x-[-50%] min-w-[54rem] h-[5.4rem] px-12 flex justify-center">
       <form onSubmit={handleSendMessage} className="w-full flex items-center">
         <input
           type="text"
@@ -34,11 +34,11 @@ const NewMessageForm = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Start Chatting..."
-          className="w-full border border-neutral-400 border-r-0 rounded-l-lg p-2 outline-none"
+          className="w-full border border-neutral-600 border-r-0 rounded-l-lg p-2 mb-12 outline-none"
         />
         <button
           type="submit"
-          className="border border-l-0 border-neutral-400 bg-white rounded-r-lg p-2"
+          className="border border-l-0 border-neutral-400 bg-white rounded-r-lg p-2 mb-12"
         >
           <TbChartBubbleFilled size={24} color={"gray"} />
         </button>
