@@ -1,5 +1,5 @@
 "use client";
-import { useAction } from "convex/react";
+import { useAction, useMutation } from "convex/react";
 import { useState } from "react";
 import useConvexAuth from "../../hooks/useConvexAuth";
 import { api } from "../../../convex/_generated/api";
@@ -11,9 +11,10 @@ const GenerateResearchForm = () => {
   const [prompt, setPrompt] = useState<string>("");
   const [result, setResult] = useState<string>("");
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const { isAuthenticated } = useConvexAuth();
+  const { isAuthenticated, userId } = useConvexAuth();
 
   const generateResults = useAction(api.actions.generateResearchResponses);
+  const saveResearchChat = useMutation(api.functions.saveResearchChat);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +23,15 @@ const GenerateResearchForm = () => {
       if (researchResults !== null) {
         setResult(researchResults);
         console.log("Research Results:", researchResults);
+
+        if (userId) {
+          await saveResearchChat({
+            userId,
+            prompt,
+            response: researchResults,
+          });
+          setPrompt("");
+        }
       } else {
         setResult("No results were generated. Please try again.");
       }

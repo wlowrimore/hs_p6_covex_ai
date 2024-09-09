@@ -61,3 +61,20 @@ export const addMessage = mutation({
     return messageId;
   },
 });
+
+export const saveResearchChat = mutation({
+  args: {
+    userId: v.id("users"),
+    prompt: v.string(),
+    response: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const researchChatId = await ctx.db.insert("researchChats", {
+      userId: args.userId,
+      prompt: args.prompt,
+      response: args.response,
+      createdAt: Date.now().toString(),
+    });
+    return researchChatId;
+  },
+});

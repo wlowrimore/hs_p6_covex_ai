@@ -13,4 +13,11 @@ export default defineSchema({
     createdAt: v.string(),
     userId: v.id("users"),
   }).index("by_createdAt", ["createdAt"]),
+
+  researchChats: defineTable({
+    userId: v.id("users"),
+    prompt: v.string(),
+    response: v.optional(v.string()),
+    createdAt: v.string(),
+  }),
 });
