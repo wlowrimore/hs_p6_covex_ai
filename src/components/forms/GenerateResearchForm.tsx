@@ -130,7 +130,7 @@ const GenerateResearchForm = () => {
         <div
           className={`fixed left-[7%] z-100 border border-white rounded-xl max-w-[40rem] bg-[#3F3F46] transition-all duration-300 ease-in-out ${
             isArchivedExpanded
-              ? "bottom-20 top-5 mb-4 h-[60rem]"
+              ? "bottom-20 top-5 mb-4 h-[57.5rem]"
               : "bottom-[-60rem] h-[62.5rem]"
           }`}
         >
@@ -167,7 +167,9 @@ const GenerateResearchForm = () => {
       {/* -------------------------AI Chat Window------------------------ */}
       <div
         className={`fixed right-[7%] z-40 border border-white rounded-xl min-w-[40rem] h-[60rem] bg-[#3F3F46] px-4 pt-2 pb-2 transition-all duration-300 ease-in-out ${
-          isAIExpanded ? "bottom-20 top-5 mb-4" : "bottom-[-57.5rem]"
+          isAIExpanded
+            ? "bottom-20 top-5 mb-4 h-[57.5rem]"
+            : "bottom-[-57.5rem]"
         }`}
       >
         <div
