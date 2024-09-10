@@ -2,12 +2,12 @@
 
 import React from "react";
 import Image from "next/image";
-import { User } from "../../app/api/auth/[...nextauth]/route";
+import { MessageUser } from "../ChatComp";
 
 const ProfileModal = ({
   user,
 }: {
-  user: User;
+  user: MessageUser;
   isOpen: boolean;
   onClose: () => void;
 }) => {

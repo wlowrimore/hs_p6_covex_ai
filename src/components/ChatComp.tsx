@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useSession } from "next-auth/react";
@@ -11,15 +11,65 @@ import { TbChartBubbleFilled } from "react-icons/tb";
 import NewMessageForm from "./forms/NewMessageForm";
 import Image from "next/image";
 import ProfileModal from "./forms/ProfileModal";
+import { Id } from "../../convex/_generated/dataModel";
+
+export interface MessageUser {
+  id?: Id<"users"> | undefined;
+  creationTime?: number | undefined;
+  image?: string | undefined;
+  name?: string | undefined;
+  email?: string | undefined;
+}
+
+interface Message {
+  _id: Id<"messages">;
+  _creationTime: number;
+  content: string;
+  user: MessageUser;
+  userId: Id<"users">;
+}
 
 const ChatComp: React.FC = () => {
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<MessageUser | null>(null);
+  const [sortedMessages, setSortedMessages] = useState<Message[]>([]);
   const messagesWithUsers = useQuery(api.functions.getMessagesWithUsers);
+  const [shouldScrollToBottom, setShouldScrollToBottom] =
+    useState<boolean>(true);
   const { data: session } = useSession();
-  console.log("MESSAGES WITH USERS: ", messagesWithUsers);
+  // console.log("MESSAGES WITH USERS: ", messagesWithUsers);
 
-  const handleOpenModal = (user: User) => {
+  useEffect(() => {
+    if (messagesWithUsers) {
+      const sorted = [...messagesWithUsers].sort(
+        (a, b) => a._creationTime - b._creationTime
+      );
+      setSortedMessages(sorted);
+      setShouldScrollToBottom(true);
+    }
+  }, [messagesWithUsers]);
+
+  useLayoutEffect(() => {
+    if (shouldScrollToBottom && chatContainerRef.current) {
+      const scrollHeight = chatContainerRef.current.scrollHeight;
+      const height = chatContainerRef.current.clientHeight;
+      const maxScrollTop = scrollHeight - height;
+      chatContainerRef.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+      setShouldScrollToBottom(false);
+    }
+  }, [sortedMessages, shouldScrollToBottom]);
+
+  const handleScroll = () => {
+    if (chatContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } =
+        chatContainerRef.current;
+      const isScrolledToBottom = scrollTop + clientHeight >= scrollHeight - 10;
+      setShouldScrollToBottom(isScrolledToBottom);
+    }
+  };
+
+  const handleOpenModal = (user: MessageUser) => {
     setSelectedUser(user);
     setModalOpen(true);
   };
@@ -57,9 +107,13 @@ const ChatComp: React.FC = () => {
           </div>
         </div>
       </div>
-      <main className="max-w-[50rem] bg-white px-4 rounded-2xl min-h-screen flex flex-col mx-auto pb-24 overflow-y-auto">
-        <ul className="overflow-y-auto min-h-screen pt-[9rem]">
-          {messagesWithUsers?.map((message) => (
+      <main
+        ref={chatContainerRef}
+        onScroll={handleScroll}
+        className="max-w-[50rem] bg-white px-4 rounded-2xl pt-[9rem] mb-24 flex flex-col mx-auto min-h-screen overflow-y-auto"
+      >
+        <ul className="overflow-y-auto">
+          {sortedMessages?.map((message) => (
             <div
               key={message._id}
               className="flex flex-col bg-zinc-700 py-3 my-3 rounded-xl"
@@ -78,7 +132,9 @@ const ChatComp: React.FC = () => {
                     alt={message.user?.name as string}
                     width={30}
                     height={30}
-                    onMouseEnter={() => handleOpenModal(message.user as User)}
+                    onMouseEnter={() =>
+                      handleOpenModal(message.user as MessageUser)
+                    }
                     onMouseLeave={handleCloseModal}
                     className="rounded-full p-[1px] min-w-8 min-h-8 max-w-8 max-h-8 bg-zinc-400 cursor-pointer"
                   />
