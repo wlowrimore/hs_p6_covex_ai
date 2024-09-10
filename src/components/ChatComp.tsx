@@ -111,7 +111,7 @@ const ChatComp: React.FC = () => {
       <main
         ref={chatContainerRef}
         onScroll={handleScroll}
-        className="max-w-[50rem] bg-white px-4 rounded-2xl pt-[9rem] mb-24 flex flex-col mx-auto min-h-screen overflow-y-auto"
+        className="min-w-[50rem] bg-white px-4 rounded-2xl pt-[9rem] mb-24 flex flex-col mx-auto min-h-screen overflow-y-auto"
       >
         <ul className="overflow-y-auto">
           {sortedMessages?.map((message) => (

@@ -25,6 +25,7 @@ interface ResearchChat {
 const GenerateResearchForm = () => {
   const latestResultRef = useRef<HTMLDivElement>(null);
   const [prompt, setPrompt] = useState<string>("");
+  const [displayPrompt, setDisplayPrompt] = useState<string>("");
   const [results, setResults] = useState<ResearchResult[]>([]);
   const [savedChats, setSavedChats] = useState<ResearchChat[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -54,6 +55,12 @@ const GenerateResearchForm = () => {
       });
     }
   }, [results]);
+
+  const handleOnChangePrompt = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setPrompt(e.target.value);
+    setDisplayPrompt(e.target.value);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -180,21 +187,26 @@ const GenerateResearchForm = () => {
         </div>
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-xl h-[54.5rem] w-full flex flex-col"
+          className="bg-white rounded-xl h-[54.5rem] flex flex-col"
         >
           {isLoading ? (
-            <div className="flex w-full h-full items-center">
+            <div className="flex h-full w-full items-center">
               <WaveLoader />
             </div>
           ) : (
-            <div className="overflow-y-auto p-4 max-w-[25rem]">
+            <div className="overflow-y-auto p-4 w-[38rem] max-w-[38rem]">
               {results.map((result, index) => (
                 <div
                   key={result.id}
                   ref={index === results.length - 1 ? latestResultRef : null}
-                  className="mb-4 text-base font-semibold"
+                  className="mb-4 text-base font-semibold w-full flex"
                 >
-                  {result.content}
+                  <div className="flex-col">
+                    <p className="text-slate-700 text-sm italic underline py-2">
+                      {displayPrompt}
+                    </p>
+                    <p>{result.content}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -215,7 +227,7 @@ const GenerateResearchForm = () => {
                 name="prompt"
                 id="prompt"
                 value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
+                onChange={handleOnChangePrompt}
                 placeholder="Ask me anything..."
                 className="w-full border border-neutral-400 border-r-0 p-2 outline-none"
               />
