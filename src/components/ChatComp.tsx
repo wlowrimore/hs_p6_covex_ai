@@ -5,7 +5,6 @@ import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
-import { User } from "../app/api/auth/[...nextauth]/route";
 
 import { TbChartBubbleFilled } from "react-icons/tb";
 import NewMessageForm from "./forms/NewMessageForm";
