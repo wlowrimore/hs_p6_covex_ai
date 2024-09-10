@@ -14,23 +14,31 @@ interface ResearchResult {
   content: string;
 }
 
+interface ResearchChat {
+  _id: string;
+  userId: string;
+  prompt: string;
+  response?: string;
+  createdAt: string;
+}
+
 const GenerateResearchForm = () => {
   const latestResultRef = useRef<HTMLDivElement>(null);
   const [prompt, setPrompt] = useState<string>("");
   const [results, setResults] = useState<ResearchResult[]>([]);
-  const [savedChats, setSavedChats] = useState<any[]>([]);
+  const [savedChats, setSavedChats] = useState<ResearchChat[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [noChatsMsg, setNoChatsMsg] = useState<string>("");
   const [isAIExpanded, setIsAIExpanded] = useState<boolean>(false);
   const [isArchivedExpanded, setIsArchivedExpanded] = useState<boolean>(false);
-  const { isAuthenticated, userId } = useConvexAuth();
+  const { userId } = useConvexAuth();
 
   const generateResults = useAction(api.actions.generateResearchResponses);
   const saveResearchChat = useMutation(api.functions.saveResearchChat);
   const listResearchChats = useQuery(
     api.functions.listResearchChats,
     userId ? { userId } : "skip"
-  );
+  ) as ResearchChat[] | undefined;
 
   useEffect(() => {
     const timer = setTimeout(() => {
