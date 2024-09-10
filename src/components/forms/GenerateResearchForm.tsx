@@ -125,12 +125,12 @@ const GenerateResearchForm = () => {
   }, [listResearchChats]);
 
   return (
-    <main className="max-h-[80vh]">
+    <>
       {savedChats.length > 0 ? (
         <div
           className={`fixed left-[7%] z-100 border border-white rounded-xl max-w-[40rem] bg-[#3F3F46] transition-all duration-300 ease-in-out ${
             isArchivedExpanded
-              ? "bottom-10 h-[60rem]"
+              ? "bottom-10 top-10 h-[60rem]"
               : "bottom-[-60rem] h-[62.5rem]"
           }`}
         >
@@ -167,7 +167,7 @@ const GenerateResearchForm = () => {
       {/* -------------------------AI Chat Window------------------------ */}
       <div
         className={`fixed right-[7%] z-40 border border-white rounded-xl min-w-[40rem] h-[60rem] bg-[#3F3F46] px-4 pt-2 pb-2 transition-all duration-300 ease-in-out ${
-          isAIExpanded ? "bottom-10" : "bottom-[-57.5rem]"
+          isAIExpanded ? "bottom-10 top-10" : "bottom-[-57.5rem]"
         }`}
       >
         <div
@@ -240,7 +240,7 @@ const GenerateResearchForm = () => {
           </div>
         </form>
       </div>
-    </main>
+    </>
   );
 };
 
