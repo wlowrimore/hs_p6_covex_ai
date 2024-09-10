@@ -125,8 +125,7 @@ const GenerateResearchForm = () => {
   }, [listResearchChats]);
 
   return (
-    <>
-      {/* ---------------------------Archived Reasearch------------------------- */}
+    <main className="max-h-[80vh]">
       {savedChats.length > 0 ? (
         <div
           className={`fixed left-[7%] z-100 border border-white rounded-xl max-w-[40rem] bg-[#3F3F46] transition-all duration-300 ease-in-out ${
@@ -241,7 +240,7 @@ const GenerateResearchForm = () => {
           </div>
         </form>
       </div>
-    </>
+    </main>
   );
 };
 
