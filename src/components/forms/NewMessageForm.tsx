@@ -34,11 +34,11 @@ const NewMessageForm = () => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Start Chatting..."
-          className="w-full border border-neutral-600 border-r-0 rounded-l-lg p-2 mb-12 outline-none"
+          className="w-full border border-neutral-600 border-r-0 rounded-l-lg p-2 mb-12 outline-none bg-none"
         />
         <button
           type="submit"
-          className="border border-l-0 border-neutral-400 bg-white rounded-r-lg p-2 mb-12"
+          className="border border-l-0 border-neutral-600 bg-white rounded-r-lg p-2 mb-12"
         >
           <TbChartBubbleFilled size={24} color={"gray"} />
         </button>

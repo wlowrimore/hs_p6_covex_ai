@@ -5,12 +5,13 @@ import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
-
-import { TbChartBubbleFilled } from "react-icons/tb";
-import NewMessageForm from "./forms/NewMessageForm";
-import Image from "next/image";
-import ProfileModal from "./forms/ProfileModal";
 import { Id } from "../../convex/_generated/dataModel";
+import Image from "next/image";
+import Link from "next/link";
+
+import NewMessageForm from "./forms/NewMessageForm";
+import ProfileModal from "./forms/ProfileModal";
+import { TbChartBubbleFilled } from "react-icons/tb";
 
 export interface MessageUser {
   id?: Id<"users"> | undefined;
@@ -37,7 +38,6 @@ const ChatComp: React.FC = () => {
   const [shouldScrollToBottom, setShouldScrollToBottom] =
     useState<boolean>(true);
   const { data: session } = useSession();
-  // console.log("MESSAGES WITH USERS: ", messagesWithUsers);
 
   useEffect(() => {
     if (messagesWithUsers) {
@@ -82,12 +82,14 @@ const ChatComp: React.FC = () => {
     <>
       <div className="bg-white min-w-[53rem] fixed top-0 left-[50%] translate-x-[-50%] z-10 flex justify-center text-start  pt-5 px-10 shadow-xl shadow-white">
         <div className="w-full bg-gradient-to-b from-neutral-950 to-zinc-300 bg-clip-text text-transparent flex flex-col">
-          <h1 className="text-6xl font-bold w-full uppercase flex">
-            Convey
-            <span className="text-zinc-500">
-              <TbChartBubbleFilled size={52} />
-            </span>
-          </h1>
+          <Link href="/">
+            <h1 className="text-6xl font-bold w-full uppercase flex">
+              Convey
+              <span className="text-zinc-500">
+                <TbChartBubbleFilled size={52} />
+              </span>
+            </h1>
+          </Link>
           <div className="w-full flex justify-between items-end">
             <p className=" text-2xl text-zinc-600 font-bold pl-1.5">
               Interal Chat Platform.
